@@ -24,9 +24,9 @@ struct Game {
 };
 
 void Game::mainTitle(Color startColor) {
-    DrawText("(Des)Equilibrados!", 100, 140, 80, WHITE);
-    DrawText("Pressione Enter para começar!", 95, 430, 35, startColor);
-    DrawText("IFCE Itapipoca", 284, 600, 25, WHITE);
+    DrawText("(Des)Equilibrados!", 100, 140, FontSize::h1, WHITE);
+    DrawText("Pressione Enter para começar!", 95, 430, FontSize::h2, startColor);
+    DrawText("IFCE Itapipoca", 284, 600, FontSize::note, WHITE);
 }
 
 int main() {
