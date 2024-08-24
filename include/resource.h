@@ -25,7 +25,7 @@ struct Resources {
         };
     }
     Resources() {
-        // loadMusics();
+        loadMusics();
         loadTextures2D();
     }
     ~Resources() {
