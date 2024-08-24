@@ -19,7 +19,15 @@ struct Game {
     GameState currentState = GameState::MainTitleScreen;
     
     Game(Resources& resources) {}
+    
+    void mainTitle(Color startColor);
 };
+
+void Game::mainTitle(Color startColor) {
+    DrawText("(Des)Equilibrados!", 100, 140, 80, WHITE);
+    DrawText("Pressione Enter para começar!", 95, 430, 35, startColor);
+    DrawText("IFCE Itapipoca", 284, 600, 25, WHITE);
+}
 
 int main() {
     
@@ -30,7 +38,10 @@ int main() {
     
     InitAudioDevice();
     Resources* resources = new Resources();
-    Game game = {resources};
+    Game game = {*resources};
+    
+    float start = GetTime();
+    int counter = 0;
     
     // Button b1 = {{20, 20}, 5.f, {30, 15}, 50, "Teste", WHITE, BLACK, WHITE};
         
@@ -39,20 +50,23 @@ int main() {
         BeginDrawing();
         
         ClearBackground(BLACK);
+        
         if (game.currentState == GameState::MainTitleScreen) {
-            // bool changeColor = Utils::timer(GetTime(), start, Constants::blinkIterval);
-            // if (changeColor) ++counter;
-            // game.mainTitle(*resources, counter % 2 == 0 ? WHITE : Color{152, 27, 36});
+            bool changeColor = Utils::timer(GetTime(), start, Constants::blinkIterval);
+            if (changeColor) ++counter;
+            game.mainTitle(counter % 2 == 0 ? WHITE : BLACK);
             if (IsKeyPressed(KEY_ENTER)) {
                 game.currentState = GameState::PlayingScreen;
             }
-        } else if (game.currentState == GameState::PlayingScreen) {
+        }
+        else if (game.currentState == GameState::PlayingScreen) {
             // game.render();
-        } else if (game.currentState == GameState::GameOverScreen) {
+        }
+        else if (game.currentState == GameState::GameOverScreen) {
             // DrawText("Game Over", 100, 140, 80, YELLOW);
             // DrawText("Pressione Enter para começar!", 95, 430, 35, WHITE);
             if (IsKeyPressed(KEY_ENTER)) {
-                game.currentState = GameState::Playing;
+                game.currentState = GameState::PlayingScreen;
             }            
         }
         
