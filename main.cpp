@@ -16,7 +16,7 @@
 using namespace std;
 
 struct Game {
-    GameState currentState = GameState::MainTitle;
+    GameState currentState = GameState::MainTitleScreen;
     
     Game(Resources& resources) {}
 };
@@ -39,21 +39,21 @@ int main() {
         BeginDrawing();
         
         ClearBackground(BLACK);
-        if (game.currentState == GameState::MainTitle) {
+        if (game.currentState == GameState::MainTitleScreen) {
             // bool changeColor = Utils::timer(GetTime(), start, Constants::blinkIterval);
             // if (changeColor) ++counter;
             // game.mainTitle(*resources, counter % 2 == 0 ? WHITE : Color{152, 27, 36});
             if (IsKeyPressed(KEY_ENTER)) {
-                game.currentState = GameState::Playing;
+                game.currentState = GameState::PlayingScreen;
             }
-        } else if (game.currentState == GameState::Playing) {
+        } else if (game.currentState == GameState::PlayingScreen) {
             // game.render();
-        } else if (game.currentState == GameState::GameOver) {
+        } else if (game.currentState == GameState::GameOverScreen) {
             // DrawText("Game Over", 100, 140, 80, YELLOW);
             // DrawText("Pressione Enter para começar!", 95, 430, 35, WHITE);
-            // if (IsKeyPressed(KEY_ENTER)) {
-            //     game.currentState = GameState::Playing;
-            // }            
+            if (IsKeyPressed(KEY_ENTER)) {
+                game.currentState = GameState::Playing;
+            }            
         }
         
         // b1.draw();
