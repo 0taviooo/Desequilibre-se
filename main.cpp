@@ -23,7 +23,7 @@ struct Game {
 
 int main() {
     
-    InitWindow(Constants::windowX, Constants::windowY, "Química");
+    InitWindow(Constants::windowX, Constants::windowY, "(Des)Equilibrados");
     
     const int fps = 60;
     SetTargetFPS(fps);
