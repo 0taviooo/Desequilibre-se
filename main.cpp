@@ -24,9 +24,12 @@ struct Game {
 };
 
 void Game::mainTitle(Color startColor) {
-    DrawText("(Des)Equilibrados!", 100, 140, FontSize::h1, WHITE);
-    DrawText("Pressione Enter para começar!", 95, 430, FontSize::h2, startColor);
-    DrawText("IFCE Itapipoca", 284, 600, FontSize::note, WHITE);
+    const char* label_t1 = "(Des)Equilibrados!";
+    const char* label_t2 = "Pressione Enter para começar!";
+    const char* label_t3 = "IFCE Itapipoca";
+    DrawText(label_t1, Utils::centralizeText(label_t1, FontSize::h1, {0, GameConstants::windowX}), (GameConstants::windowY/12)*4, FontSize::h1, WHITE);
+    DrawText(label_t2, Utils::centralizeText(label_t2, FontSize::h2, {0, GameConstants::windowX}), (GameConstants::windowY/12)*7, FontSize::h2, startColor);
+    DrawText(label_t3, Utils::centralizeText(label_t3, FontSize::note, {0, GameConstants::windowX}), (GameConstants::windowY/12)*11, FontSize::note, WHITE);
 }
 
 int main() {
