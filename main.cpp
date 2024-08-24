@@ -6,7 +6,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "include/constants.h"
+#include "include/Constants.h"
 #include "include/utils.h"
 #include "include/resource.h"
 #include "include/random.h"
@@ -31,7 +31,7 @@ void Game::mainTitle(Color startColor) {
 
 int main() {
     
-    InitWindow(Constants::windowX, Constants::windowY, "(Des)Equilibrados");
+    InitWindow(GameConstants::windowX, GameConstants::windowY, "(Des)Equilibrados");
     
     const int fps = 60;
     SetTargetFPS(fps);
@@ -52,7 +52,7 @@ int main() {
         ClearBackground(BLACK);
         
         if (game.currentState == GameState::MainTitleScreen) {
-            bool changeColor = Utils::timer(GetTime(), start, Constants::blinkIterval);
+            bool changeColor = Utils::timer(GetTime(), start, GameConstants::blinkIterval);
             if (changeColor) ++counter;
             game.mainTitle(counter % 2 == 0 ? WHITE : BLACK);
             if (IsKeyPressed(KEY_ENTER)) {
