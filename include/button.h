@@ -45,11 +45,12 @@ struct Button {
         return height;
     }
     void draw() {
+        Color sec_color = CheckCollisionPointRec(GetMousePosition(), BUTTON) ? color3 : color1;
         const char* text_content = content.c_str();
         int content_size = MeasureText(text_content, size);
-        DrawRectangle(pos.x, pos.y, get_width(), get_height(), color1);
+        DrawRectangle(pos.x, pos.y, get_width(), get_height(), sec_color);
         DrawRectangleRec(BUTTON, color2);
-        DrawText(text_content, pos.x + border + (get_width(false) - content_size) / 2, pos.y + border + (get_height(false) - size) / 2, size, color3);
+        DrawText(text_content, pos.x + border + (get_width(false) - content_size) / 2, pos.y + border + (get_height(false) - size) / 2, size, sec_color);
     }
     bool click() {
         return (CheckCollisionPointRec(GetMousePosition(), BUTTON) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT));

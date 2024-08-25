@@ -43,7 +43,7 @@ void Game::selectionScreen() {
     };
     vector<Button> buttons = {};
     for (int i = 0; i < labels.size(); ++i) {
-        buttons.push_back({5.f, {20, 15}, 50, string(labels[i]), WHITE, BLACK, WHITE});
+        buttons.push_back({5.f, {20, 15}, 50, string(labels[i]), WHITE, BLACK, GRAY});
         buttons[i].update({Utils::centralize(buttons[i].get_width(), {0, GameConstants::windowX}), GameConstants::windowYPieces[i*2+1]});
     }
     DrawText(label_t1, Utils::centralize(MeasureText(label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[0], FontSize::h2, WHITE);
