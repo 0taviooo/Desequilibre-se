@@ -21,12 +21,24 @@ struct Game {
     Game(Resources& resources) {}
     
     void mainTitleScreen(Color startColor);
+    void selectionScreen();
 };
 
 void Game::mainTitleScreen(Color startColor) {
     const char* label_t1 = "(Des)Equilibrados!";
     const char* label_t2 = "Pressione Enter para começar!";
     const char* label_t3 = "IFCE Itapipoca";
+    DrawText(label_t1, Utils::centralize(MeasureText(label_t1, FontSize::h1), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h1, WHITE);
+    DrawText(label_t2, Utils::centralize(MeasureText(label_t2, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[6], FontSize::h2, startColor);
+    DrawText(label_t3, Utils::centralize(MeasureText(label_t3, FontSize::note), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::note, WHITE);
+}
+
+void Game::selectionScreen() {
+    const char* label_t1 = "Selecione a dificuldade:";
+    const char* label_t2 = "Fácil";
+    const char* label_t3 = "Médio";
+    const char* label_t4 = "Difícil";
+    const char* label_t5 = "Créditos";
     DrawText(label_t1, Utils::centralize(MeasureText(label_t1, FontSize::h1), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h1, WHITE);
     DrawText(label_t2, Utils::centralize(MeasureText(label_t2, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[6], FontSize::h2, startColor);
     DrawText(label_t3, Utils::centralize(MeasureText(label_t3, FontSize::note), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::note, WHITE);
