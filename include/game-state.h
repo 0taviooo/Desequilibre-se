@@ -4,6 +4,7 @@
 
 enum class GameState {
     MainTitleScreen,
+    SelectionScreen,
     PlayingScreen,
     PausedScreen,
     WinningScreen,
