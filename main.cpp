@@ -20,10 +20,10 @@ struct Game {
     
     Game(Resources& resources) {}
     
-    void mainTitle(Color startColor);
+    void mainTitleScreen(Color startColor);
 };
 
-void Game::mainTitle(Color startColor) {
+void Game::mainTitleScreen(Color startColor) {
     const char* label_t1 = "(Des)Equilibrados!";
     const char* label_t2 = "Pressione Enter para começar!";
     const char* label_t3 = "IFCE Itapipoca";
@@ -57,7 +57,7 @@ int main() {
         if (game.currentState == GameState::MainTitleScreen) {
             bool changeColor = Utils::timer(GetTime(), start, GameConstants::blinkIterval);
             if (changeColor) ++counter;
-            game.mainTitle(counter % 2 == 0 ? WHITE : BLACK);
+            game.mainTitleScreen(counter % 2 == 0 ? WHITE : BLACK);
             if (IsKeyPressed(KEY_ENTER)) {
                 game.currentState = GameState::PlayingScreen;
             }
