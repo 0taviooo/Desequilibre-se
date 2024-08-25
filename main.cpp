@@ -35,13 +35,21 @@ void Game::mainTitleScreen(Color startColor) {
 
 void Game::selectionScreen() {
     const char* label_t1 = "Selecione a dificuldade:";
-    const char* label_t2 = "Fácil";
-    const char* label_t3 = "Médio";
-    const char* label_t4 = "Difícil";
-    const char* label_t5 = "Créditos";
-    DrawText(label_t1, Utils::centralize(MeasureText(label_t1, FontSize::h1), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h1, WHITE);
-    DrawText(label_t2, Utils::centralize(MeasureText(label_t2, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[6], FontSize::h2, startColor);
-    DrawText(label_t3, Utils::centralize(MeasureText(label_t3, FontSize::note), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::note, WHITE);
+    vector<const char*> labels = {
+        "Fácil",
+        "Médio",
+        "Difícil",
+        "Créditos"
+    };
+    vector<Button> buttons = {};
+    for (int i = 0; i < labels.size(); ++i) {
+        buttons.push_back({5.f, {20, 15}, 50, string(labels[i]), WHITE, BLACK, WHITE});
+        buttons[i].update({Utils::centralize(buttons[i].get_width(), {0, GameConstants::windowX}), GameConstants::windowYPieces[i*2+1]});
+    }
+    DrawText(label_t1, Utils::centralize(MeasureText(label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[0], FontSize::h2, WHITE);
+    for (Button button: buttons) {
+        button.draw();
+    }
 }
 
 int main() {
@@ -71,8 +79,11 @@ int main() {
             if (changeColor) ++counter;
             game.mainTitleScreen(counter % 2 == 0 ? WHITE : BLACK);
             if (IsKeyPressed(KEY_ENTER)) {
-                game.currentState = GameState::PlayingScreen;
+                game.currentState = GameState::SelectionScreen;
             }
+        }
+        else if (game.currentState == GameState::SelectionScreen) {
+            game.selectionScreen();
         }
         else if (game.currentState == GameState::PlayingScreen) {
             // game.render();

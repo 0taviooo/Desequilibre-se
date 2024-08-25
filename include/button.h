@@ -9,6 +9,7 @@
 using namespace std;
 
 struct Button {
+    Vector2 pos = {0, 0};
     float border = 0.f;
     Vector2 gap = {0, 0};
     float size = 0.f;
@@ -19,7 +20,6 @@ struct Button {
     Rectangle BUTTON = {0, 0, 0, 0};
     
     Button(
-        Vector2 pos = {0, 0};
         float border_ = 0.f,
         Vector2 gap_ = {0, 0},
         float size_ = 0.f,
@@ -32,7 +32,7 @@ struct Button {
     
     void update(Vector2 pos_) {
         pos = pos_;
-        BUTTON = {pos.x, pos.y, get_width(false), get_height(false)};
+        BUTTON = {pos.x + border, pos.y + border, get_width(false), get_height(false)};
     }
     float get_width(bool border_on = true) {
         float border_num = border_on ? border : 0;
