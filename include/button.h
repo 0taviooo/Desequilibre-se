@@ -13,17 +13,17 @@ struct Button {
     float border = 0.f;
     Vector2 gap = {0, 0};
     float size = 0.f;
-    string content = "";
+    const char* content;
     Color color1 = BLANK;
     Color color2 = BLANK;
     Color color3 = BLANK;
-    Rectangle BUTTON = {0, 0, 0, 0};
+    Rectangle BUTTON = {pos.x, pos.y, 0, 0};
     
     Button(
         float border_ = 0.f,
         Vector2 gap_ = {0, 0},
         float size_ = 0.f,
-        string content_ = "",
+        const char* content_ = "",
         Color color1_ = BLANK,
         Color color2_ = BLANK,
         Color color3_ = BLANK
@@ -34,9 +34,12 @@ struct Button {
         pos = pos_;
         BUTTON = {pos.x + border, pos.y + border, get_width(false), get_height(false)};
     }
+    float get_content_size() {
+        return MeasureText(content, size);
+    }
     float get_width(bool border_on = true) {
         float border_num = border_on ? border : 0;
-        float width = MeasureText(content.c_str(), size) + (border_num + gap.x) * 2;
+        float width = get_content_size() + (border_num + gap.x) * 2;
         return width;
     }
     float get_height(bool border_on = true) {
@@ -46,11 +49,9 @@ struct Button {
     }
     void draw() {
         Color sec_color = CheckCollisionPointRec(GetMousePosition(), BUTTON) ? color3 : color1;
-        const char* text_content = content.c_str();
-        int content_size = MeasureText(text_content, size);
         DrawRectangle(pos.x, pos.y, get_width(), get_height(), sec_color);
         DrawRectangleRec(BUTTON, color2);
-        DrawText(text_content, pos.x + border + (get_width(false) - content_size) / 2, pos.y + border + (get_height(false) - size) / 2, size, sec_color);
+        DrawText(content, pos.x + border + (get_width(false) - get_content_size()) / 2, pos.y + border + (get_height(false) - size) / 2, size, sec_color);
     }
     bool click() {
         return (CheckCollisionPointRec(GetMousePosition(), BUTTON) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT));

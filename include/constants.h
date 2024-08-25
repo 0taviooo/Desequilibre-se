@@ -3,7 +3,6 @@
 #define CONSTANTS_H
 
 #include <vector>
-#include <algorithm>
 
 struct GameConstants {
     static constexpr float blinkIterval = 1.f;
@@ -12,7 +11,7 @@ struct GameConstants {
     static const std::vector<float> windowXPieces;
     static const std::vector<float> windowYPieces;
     
-    static std::vector<float> generatePieces(int value) {
+    static std::vector<float> generatePieces() {
         std::vector<float> v = {};
         int num = 12;
         for (int i = 1; i < num+1; ++i) {
@@ -23,8 +22,8 @@ struct GameConstants {
 
 };
 
-const std::vector<float> GameConstants::windowXPieces = GameConstants::generatePieces(GameConstants::windowX);
-const std::vector<float> GameConstants::windowYPieces = GameConstants::generatePieces(GameConstants::windowY);
+const std::vector<float> GameConstants::windowXPieces = GameConstants::generatePieces();
+const std::vector<float> GameConstants::windowYPieces = GameConstants::generatePieces();
 
 struct FontSize {
     static constexpr float h1 = 60.f;
