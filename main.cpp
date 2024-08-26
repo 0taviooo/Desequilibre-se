@@ -23,6 +23,7 @@ struct Game {
     
     void mainTitleScreen(Color startColor);
     void selectionScreen();
+    void playingScreen();
     
     struct MainTitleScreenData {
         static constexpr const char* label_t1 = "(Des)Equilibrados!";
@@ -37,6 +38,10 @@ struct Game {
         static vector<Button> buttons;
         
         static vector<Button> generateButtons();
+    };    
+    
+    struct PLayingScreenData {
+        static constexpr const char* label_t1 = "Para qual lado a equação tenderá?";
     };
 };
 
@@ -77,6 +82,10 @@ void Game::selectionScreen() {
     for (Button button: Game::SelectionScreenData::buttons) {
         button.draw();
     }
+}
+
+void Game::playingScreen() {
+    DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PLayingScreenData::label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[10], FontSize::body, WHITE);
 }
 
 int main() {
