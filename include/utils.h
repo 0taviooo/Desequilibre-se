@@ -21,9 +21,8 @@ bool Utils::timer(float currentTime, float& lastTime, float interval) {
 }
 
 float Utils::centralize(float length, Vector2 posLimX) {
-    float box_size = posLimX.y - posLimX.x;
-    float gap = (box_size - length) / 2;
-    float x = box_size - length - gap;
+    float gap = (posLimX.y - length) / 2;
+    float x = posLimX.x + posLimX.y - length - gap;
     return x;
 }
 

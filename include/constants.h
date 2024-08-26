@@ -14,7 +14,7 @@ struct GameConstants {
     static std::vector<float> generatePieces() {
         std::vector<float> v = {};
         int num = 12;
-        for (int i = 1; i < num+1; ++i) {
+        for (int i = 0; i < num; ++i) {
             v.push_back(windowX/num*i);
         }
         return v;

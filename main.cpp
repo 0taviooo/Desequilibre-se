@@ -42,34 +42,49 @@ struct Game {
     };    
     
     struct PlayingScreenData {
-        static constexpr const char* label_t1 = "Para qual lado a equação tenderá?";
+        static constexpr const char* label_t1 = "Para qual lado \na equação tenderá?";
+        static constexpr const char* label_t2 = "Esquerda";
+        static constexpr const char* label_t3 = "Direita";
+        
+        static Button button_left;
+        static Button button_right;
+        
+        static void generateButtons();
     };
 };
-
-vector<Button> Game::SelectionScreenData::buttons = Game::SelectionScreenData::generateButtons();
-
-void Game::Initialize() {
-    Game::SelectionScreenData::buttons = Game::SelectionScreenData::generateButtons();
-}
 
 Game::Game(Resources& resources) {
     Initialize();
 }
 
+vector<Button> Game::SelectionScreenData::buttons = Game::SelectionScreenData::generateButtons();
+void Game::Initialize() {
+    Game::SelectionScreenData::buttons = Game::SelectionScreenData::generateButtons();
+    Game::PlayingScreenData::generateButtons();
+}
 const vector<const char*> Game::SelectionScreenData::labels = {
     "Fácil",
     "Médio",
     "Difícil",
     "Créditos"
 };
-
 vector<Button> Game::SelectionScreenData::generateButtons() {
     vector<Button> v = {};
     for (unsigned int i = 0; i < labels.size(); ++i) {
         v.push_back({5.f, {20, 15}, FontSize::h2, labels[i], WHITE, BLACK, GRAY});
-        v[i].update({Utils::centralize(v[i].get_width(), {0, GameConstants::windowX}), GameConstants::windowYPieces[i * 2 + 1]});
+        v[i].update({Utils::centralize(v[i].get_width(), {0, GameConstants::windowX}), GameConstants::windowYPieces[i * 2 + 2]});
     }
     return v;
+}
+
+Button Game::PlayingScreenData::button_left;
+Button Game::PlayingScreenData::button_right;
+void Game::PlayingScreenData::generateButtons() {
+    button_left = {5.f, {20, 15}, FontSize::h2, label_t2, WHITE, BLACK, GRAY};
+    button_right = {5.f, {20, 15}, FontSize::h2, label_t3, WHITE, BLACK, GRAY};
+    
+    button_left.update({Utils::centralize(button_left.get_width(), {GameConstants::windowXPieces[0], GameConstants::windowXPieces[4]}), GameConstants::windowYPieces[9]});
+    button_right.update({Utils::centralize(button_right.get_width(), {GameConstants::windowXPieces[5], GameConstants::windowXPieces[11]}), GameConstants::windowYPieces[9]});
 }
 
 void Game::mainTitleScreen(Color startColor) {
@@ -79,14 +94,16 @@ void Game::mainTitleScreen(Color startColor) {
 }
 
 void Game::selectionScreen() {
-    DrawText(Game::SelectionScreenData::label_t1, Utils::centralize(MeasureText(Game::SelectionScreenData::label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[0], FontSize::h2, WHITE);
+    DrawText(Game::SelectionScreenData::label_t1, Utils::centralize(MeasureText(Game::SelectionScreenData::label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[1], FontSize::h2, WHITE);
     for (Button button: Game::SelectionScreenData::buttons) {
         button.draw();
     }
 }
 
 void Game::playingScreen() {
-    DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PlayingScreenData::label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[10], FontSize::body, WHITE);
+    DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PlayingScreenData::label_t1, FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::body, WHITE);
+    Game::PlayingScreenData::button_left.draw();
+    Game::PlayingScreenData::button_right.draw();
 }
 
 int main() {
@@ -135,7 +152,7 @@ int main() {
             }
         }
         else if (game.currentState == GameState::PlayingScreen) {
-            // game.render();
+            game.playingScreen();
         }
         else if (game.currentState == GameState::GameOverScreen) {
             // DrawText("Game Over", 100, 140, 80, YELLOW);
