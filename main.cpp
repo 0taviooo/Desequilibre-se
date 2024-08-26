@@ -40,7 +40,7 @@ struct Game {
         static vector<Button> generateButtons();
     };    
     
-    struct PLayingScreenData {
+    struct PlayingScreenData {
         static constexpr const char* label_t1 = "Para qual lado a equação tenderá?";
     };
 };
@@ -85,7 +85,7 @@ void Game::selectionScreen() {
 }
 
 void Game::playingScreen() {
-    DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PLayingScreenData::label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[10], FontSize::body, WHITE);
+    DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PlayingScreenData::label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[10], FontSize::body, WHITE);
 }
 
 int main() {
@@ -117,6 +117,21 @@ int main() {
         }
         else if (game.currentState == GameState::SelectionScreen) {
             game.selectionScreen();
+            if (Game::SelectionScreenData::buttons[0].click()) {
+                game.currentState = GameState::PlayingScreen;
+                game.difficulty = 0;
+            }
+            else if (Game::SelectionScreenData::buttons[1].click()) {
+                game.currentState = GameState::PlayingScreen;
+                game.difficulty = 1;
+            }
+            else if (Game::SelectionScreenData::buttons[2].click()) {
+                game.currentState = GameState::PlayingScreen;
+                game.difficulty = 2;
+            }
+            else if (Game::SelectionScreenData::buttons[3].click()) {
+                game.currentState = GameState::PlayingScreen;
+            }
         }
         else if (game.currentState == GameState::PlayingScreen) {
             // game.render();
