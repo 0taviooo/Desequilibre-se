@@ -17,6 +17,7 @@ using namespace std;
 
 struct Game {
     GameState currentState = GameState::MainTitleScreen;
+    int difficulty = 0;
     
     Game(Resources& resources);
     static void Initialize();
