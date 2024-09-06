@@ -18,15 +18,15 @@ Será mostrado na tela uma equação química reversível (Ex.: **HCl(aq) + H₂
 
 **Há 3 dificuldades jogáveis:**
 
-* Fácil.
+* **Fácil.**
 
   O tempo para responder cada pergunta é 15 segundos.
 
-* Médio.
+* **Médio.**
 
   O tempo para responder cada pergunta é 10 segundos.
 
-* Difícil.
+* **Difícil.**
 
   O tempo para responder cada pergunta é 5 segundos.
 
