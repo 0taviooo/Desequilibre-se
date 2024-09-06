@@ -65,14 +65,13 @@ void Game::Initialize() {
 const vector<const char*> Game::SelectionScreenData::labels = {
     "Fácil",
     "Médio",
-    "Difícil",
-    "Créditos"
+    "Difícil"
 };
 vector<Button> Game::SelectionScreenData::generateButtons() {
     vector<Button> v = {};
     for (unsigned int i = 0; i < labels.size(); ++i) {
         v.push_back({5.f, {20, 15}, FontSize::h2, labels[i], WHITE, BLACK, GRAY});
-        v[i].update({Utils::centralize(v[i].get_width(), {0, GameConstants::windowX}), GameConstants::windowYPieces[i * 2 + 2]});
+        v[i].update({Utils::centralize(v[i].get_width(), {0, GameConstants::windowX}), GameConstants::windowYPieces[i * 2 + 4]});
     }
     return v;
 }
@@ -94,7 +93,7 @@ void Game::mainTitleScreen(Color startColor) {
 }
 
 void Game::selectionScreen() {
-    DrawText(Game::SelectionScreenData::label_t1, Utils::centralize(MeasureText(Game::SelectionScreenData::label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[1], FontSize::h2, WHITE);
+    DrawText(Game::SelectionScreenData::label_t1, Utils::centralize(MeasureText(Game::SelectionScreenData::label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h2, WHITE);
     for (Button button: Game::SelectionScreenData::buttons) {
         button.draw();
     }
