@@ -27,7 +27,7 @@ struct Game {
     void playingScreen();
     
     struct MainTitleScreenData {
-        static constexpr const char* label_t1 = "(Des)Equilibrados!";
+        static constexpr const char* label_t1 = "(Des)Equilibre-se!";
         static constexpr const char* label_t2 = "Pressione Enter para começar!";
         static constexpr const char* label_t3 = "IFCE Itapipoca";
     };
@@ -111,7 +111,7 @@ void Game::playingScreen() {
 }
 
 int main() {
-    InitWindow(GameConstants::windowX, GameConstants::windowY, "(Des)Equilibrados");
+    InitWindow(GameConstants::windowX, GameConstants::windowY, "(Des)Equilibre-se!");
     
     const int fps = 60;
     SetTargetFPS(fps);
