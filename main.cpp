@@ -102,6 +102,8 @@ void Game::selectionScreen() {
 
 void Game::playingScreen() {
     DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PlayingScreenData::label_t1, FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::body, WHITE);
+    DrawRectangle(Utils::centralize(Game::PlayingScreenData::button_left.get_width(), {GameConstants::windowXPieces[1], GameConstants::windowXPieces[4]}), GameConstants::windowYPieces[7], 32, 64, BLUE);
+    DrawRectangle(Utils::centralize(Game::PlayingScreenData::button_left.get_width(), {GameConstants::windowXPieces[6], GameConstants::windowXPieces[11]}), GameConstants::windowYPieces[7], 32, 64, RED);
     Game::PlayingScreenData::button_left.draw();
     Game::PlayingScreenData::button_right.draw();
 }
