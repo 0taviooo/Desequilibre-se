@@ -21,6 +21,7 @@ using namespace std;
 struct Game {
     GameState currentState = GameState::MainTitleScreen;
     int difficulty = 0;
+    int score = 0;
     
     Game(Resources& resources);
     static void Initialize();
@@ -28,6 +29,7 @@ struct Game {
     void mainTitleScreen(Color startColor);
     void selectionScreen();
     void playingScreen();
+    void gameOverScreen(int score, Color startColor);
     
     struct MainTitleScreenData {
         static constexpr const char* label_t1 = "(Des)Equilibre-se!";
@@ -45,7 +47,6 @@ struct Game {
     };    
     
     struct PlayingScreenData {
-
         static constexpr const char* label_t1 = "Para qual lado \na equação tenderá?";
         static constexpr const char* label_t2 = "Esquerda";
         static constexpr const char* label_t3 = "Direita";
@@ -54,6 +55,13 @@ struct Game {
         static Button button_right;
         
         static void generateButtons();
+    };
+    
+    struct GameOverScreenData {
+        static constexpr const char* label_t1 = "Fim de Jogo!";
+        static constexpr const char* label_t2 = "Pontuação: ";
+        static constexpr const char* label_t3 = "Não desista!";
+        static constexpr const char* label_t4 = "Pressione Enter para retornar!";
     };
 };
 
@@ -112,6 +120,13 @@ void Game::playingScreen() {
     Game::PlayingScreenData::button_right.draw();
 }
 
+void Game::gameOverScreen(int score, Color startColor) {
+    DrawText(Game::GameOverScreenData::label_t1, Utils::centralize(MeasureText(Game::GameOverScreenData::label_t1, FontSize::h1), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h1, WHITE);
+    DrawText((string(Game::GameOverScreenData::label_t2) + to_string(score)).c_str(), Utils::centralize(MeasureText(Game::GameOverScreenData::label_t2, FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[5], FontSize::body, WHITE);
+    DrawText(Game::GameOverScreenData::label_t3, Utils::centralize(MeasureText(Game::GameOverScreenData::label_t3, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[6], FontSize::h2, WHITE);
+    DrawText(Game::GameOverScreenData::label_t4, Utils::centralize(MeasureText(Game::GameOverScreenData::label_t4, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[7], FontSize::h2, startColor);
+}
+
 int main() {
     InitWindow(GameConstants::windowX, GameConstants::windowY, "(Des)Equilibre-se!");
     
@@ -122,12 +137,13 @@ int main() {
     Resources* resources = new Resources();
     Game game = {*resources};
     
+    bool changeColor;
+    
     float start = GetTime();
     int counter = 0;
     
     Bar time_bar;
-
-            
+    
     while (!WindowShouldClose()) {
         
         BeginDrawing();
@@ -135,9 +151,11 @@ int main() {
         ClearBackground(BLACK);
         
         if (game.currentState == GameState::MainTitleScreen) {
-            bool changeColor = Utils::timer(GetTime(), start, GameConstants::blinkIterval);
+            changeColor = Utils::timer(GetTime(), start, GameConstants::blinkIterval);
             if (changeColor) ++counter;
+            
             game.mainTitleScreen(counter % 2 == 0 ? WHITE : BLACK);
+            
             if (IsKeyPressed(KEY_ENTER)) {
                 game.currentState = GameState::SelectionScreen;
             }
@@ -168,10 +186,13 @@ int main() {
             time_bar.draw();
         }
         else if (game.currentState == GameState::GameOverScreen) {
-            // DrawText("Game Over", 100, 140, 80, YELLOW);
-            // DrawText("Pressione Enter para começar!", 95, 430, 35, WHITE);
+            changeColor = Utils::timer(GetTime(), start, GameConstants::blinkIterval);
+            if (changeColor) ++counter;
+            
+            game.gameOverScreen(game.score, counter % 2 == 0 ? WHITE : BLACK);
+            
             if (IsKeyPressed(KEY_ENTER)) {
-                game.currentState = GameState::PlayingScreen;
+                game.currentState = GameState::SelectionScreen;
             }            
         }
                 
