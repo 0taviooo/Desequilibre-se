@@ -45,6 +45,7 @@ struct Game {
     };    
     
     struct PlayingScreenData {
+
         static constexpr const char* label_t1 = "Para qual lado \na equação tenderá?";
         static constexpr const char* label_t2 = "Esquerda";
         static constexpr const char* label_t3 = "Direita";
@@ -63,7 +64,6 @@ Game::Game(Resources& resources) {
 vector<Button> Game::SelectionScreenData::buttons = Game::SelectionScreenData::generateButtons();
 void Game::Initialize() {
     Game::SelectionScreenData::buttons = Game::SelectionScreenData::generateButtons();
-    Game::PlayingScreenData::generateButtons();
 }
 const vector<const char*> Game::SelectionScreenData::labels = {
     "Fácil",
@@ -124,6 +124,9 @@ int main() {
     
     float start = GetTime();
     int counter = 0;
+    
+    Bar time_bar;
+
             
     while (!WindowShouldClose()) {
         
@@ -142,23 +145,27 @@ int main() {
         else if (game.currentState == GameState::SelectionScreen) {
             game.selectionScreen();
             if (Game::SelectionScreenData::buttons[0].click()) {
-                game.currentState = GameState::PlayingScreen;
                 game.difficulty = 0;
+                game.currentState = GameState::PlayingScreen;
+                time_bar = {{0, 0}, GameConstants::windowX, 32, 15 - game.difficulty * 5, {GREEN, MAROON}};
             }
             else if (Game::SelectionScreenData::buttons[1].click()) {
-                game.currentState = GameState::PlayingScreen;
                 game.difficulty = 1;
+                game.currentState = GameState::PlayingScreen;
+                time_bar = {{0, 0}, GameConstants::windowX, 32, 15 - game.difficulty * 5, {GREEN, MAROON}};
             }
             else if (Game::SelectionScreenData::buttons[2].click()) {
-                game.currentState = GameState::PlayingScreen;
                 game.difficulty = 2;
-            }
-            else if (Game::SelectionScreenData::buttons[3].click()) {
                 game.currentState = GameState::PlayingScreen;
+                time_bar = {{0, 0}, GameConstants::windowX, 32, 15 - game.difficulty * 5, {GREEN, MAROON}};
             }
         }
         else if (game.currentState == GameState::PlayingScreen) {
+            if (Utils::timer(GetTime(), start, 1)) {
+                if (time_bar.update(1)) game.currentState = GameState::GameOverScreen;
+            }
             game.playingScreen();
+            time_bar.draw();
         }
         else if (game.currentState == GameState::GameOverScreen) {
             // DrawText("Game Over", 100, 140, 80, YELLOW);

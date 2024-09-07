@@ -12,6 +12,7 @@ struct Bar {
     float width = 0.f;
     float height = 0.f;
     int length = 0;
+    int remaining = 0;
     vector <Color> colors = {};
     vector <Rectangle> BARS = {};
     
@@ -21,18 +22,24 @@ struct Bar {
         float height_ = 0.f,
         int length_ = 0,
         vector <Color> colors_ = {}
-    ): pos(pos_), width(width_), length(length_), colors(colors_) {}
-    
+    ): pos(pos_), width(width_), height(height_), length(length_), colors(colors_) {
+        construct();
+    }
     
     void construct() {
         for (int i = 0; i < length; ++i) {
             BARS.push_back({pos.x + i * width/length, pos.y, width/length, height});
         }
+        remaining = length;
     }
-    void draw(int quantity = 0) {
+    bool update(int quantity = 0) {
+        remaining -= quantity;
+        return remaining <= 0;
+    }
+    void draw() {
         for (int i = 0; i < (int) BARS.size(); ++i) {
-            if (i >= length - quantity) DrawRectangleRec(BARS[BARS.size() - i], colors[0]);
-            else { DrawRectangleRec(BARS[BARS.size() - i], colors[1]); }
+            if (i < remaining) DrawRectangleRec(BARS[i], colors[0]);
+            else { DrawRectangleRec(BARS[i], colors[1]); }
         }
     }
 };

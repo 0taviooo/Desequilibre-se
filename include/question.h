@@ -11,7 +11,7 @@ struct Question {
     Question(
         const char* text_ = "",
         bool answer_ = false
-    ): text(text_), answer(answer) {}
+    ): text(text_), answer(answer_) {}
 };
 
 #endif

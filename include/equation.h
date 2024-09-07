@@ -16,7 +16,7 @@ struct Equation {
         vector<const char*> reactants_ = {},
         vector<const char*> products_ = {},
         vector<Question> questions_ = {}
-    ): reactants(reactants_), products(products_), question(questions_) {}
+    ): reactants(reactants_), products(products_), questions(questions_) {}
 };
 
 #endif
