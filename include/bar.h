@@ -1,6 +1,6 @@
-#ifndef EQUATION_H
+#ifndef BAR_H
 
-#define EQUATION_H
+#define BAR_H
 
 #include <vector>
 #include "raylib.h"
