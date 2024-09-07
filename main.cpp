@@ -15,6 +15,7 @@
 #include "include/question.h"
 #include "include/equation.h"
 #include "include/bar.h"
+#include "include/data.h"
 
 using namespace std;
 
@@ -72,6 +73,7 @@ Game::Game(Resources& resources) {
 vector<Button> Game::SelectionScreenData::buttons = Game::SelectionScreenData::generateButtons();
 void Game::Initialize() {
     Game::SelectionScreenData::buttons = Game::SelectionScreenData::generateButtons();
+    Game::PlayingScreenData::generateButtons();
 }
 const vector<const char*> Game::SelectionScreenData::labels = {
     "Fácil",
@@ -111,6 +113,9 @@ void Game::selectionScreen() {
 }
 
 void Game::playingScreen() {
+    DrawText(material_data[0].to_draw_string.c_str(), Utils::centralize(MeasureText(material_data[0].to_draw_string.c_str(), FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h2, WHITE);
+    DrawText(material_data[0].questions[0].text, Utils::centralize(MeasureText(material_data[0].questions[0].text, FontSize::body)/2, {0, GameConstants::windowXPieces[9]}), GameConstants::windowYPieces[4], FontSize::body, WHITE);
+    
     DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PlayingScreenData::label_t1, FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::body, WHITE);
     DrawRectangle(Utils::centralize(32, {GameConstants::windowXPieces[0], GameConstants::windowXPieces[3]}), GameConstants::windowYPieces[7], 32, 64, BLUE);
     DrawRectangle(Utils::centralize(32, {GameConstants::windowXPieces[5], GameConstants::windowXPieces[11]}), GameConstants::windowYPieces[7], 32, 64, RED);
