@@ -12,6 +12,9 @@
 #include "include/random.h"
 #include "include/game-state.h"
 #include "include/button.h"
+#include "include/question.h"
+#include "include/equation.h"
+#include "include/bar.h"
 
 using namespace std;
 
