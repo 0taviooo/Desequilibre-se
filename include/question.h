@@ -4,7 +4,7 @@
 
 using namespace std;
 
-class Question {
+struct Question {
     const char* text;
     bool answer = false;
     

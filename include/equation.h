@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class Equation {
+struct Equation {
     vector<const char*> reactants = {};
     vector<const char*> products = {};
     vector<Question> questions = {};
