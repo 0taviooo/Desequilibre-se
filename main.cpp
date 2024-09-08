@@ -23,13 +23,18 @@ struct Game {
     GameState currentState = GameState::MainTitleScreen;
     int difficulty = 0;
     int score = 0;
+    Texture2D b1_sprite;
+    Texture2D b2_sprite;
+    Texture2D b3_sprite;
+    Texture2D g1_sprite;
+    Equation current_equation;
     
     Game(Resources& resources);
     static void Initialize();
     
     void mainTitleScreen(Color startColor);
     void selectionScreen();
-    void playingScreen();
+    void playingScreen(Resources& resources, bool change, bool toggle);
     void gameOverScreen(int score, Color startColor);
     
     struct MainTitleScreenData {
@@ -68,6 +73,8 @@ struct Game {
 
 Game::Game(Resources& resources) {
     Initialize();
+    Game::b1_sprite = resources.textures["b1_0"];
+    Game::g1_sprite = resources.textures["g1_default"];
 }
 
 vector<Button> Game::SelectionScreenData::buttons = Game::SelectionScreenData::generateButtons();
@@ -112,15 +119,23 @@ void Game::selectionScreen() {
     }
 }
 
-void Game::playingScreen() {
+void Game::playingScreen(Resources& resources, bool change, bool toggle) {
     DrawText(material_data[0].to_draw_string.c_str(), Utils::centralize(MeasureText(material_data[0].to_draw_string.c_str(), FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h2, WHITE);
     DrawText(material_data[0].questions[0].text, Utils::centralize(MeasureText(material_data[0].questions[0].text, FontSize::body)/2, {0, GameConstants::windowXPieces[9]}), GameConstants::windowYPieces[4], FontSize::body, WHITE);
     
     DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PlayingScreenData::label_t1, FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::body, WHITE);
-    DrawRectangle(Utils::centralize(32, {GameConstants::windowXPieces[0], GameConstants::windowXPieces[3]}), GameConstants::windowYPieces[7], 32, 64, BLUE);
-    DrawRectangle(Utils::centralize(32, {GameConstants::windowXPieces[5], GameConstants::windowXPieces[11]}), GameConstants::windowYPieces[7], 32, 64, RED);
-    DrawRectangle(Utils::centralize(32, {0, GameConstants::windowX}), GameConstants::windowYPieces[7], 32, 64, GREEN);
-    DrawRectangle(Utils::centralize(512, {0, GameConstants::windowX}), GameConstants::windowYPieces[6], 512, 32, PURPLE);
+    
+    Game::b1_sprite = change ? resources.textures["b1_0"] : resources.textures["b1_1"];
+    Game::b2_sprite = change ? resources.textures["b1_0"] : resources.textures["b1_1"];
+    Game::b3_sprite = change ? resources.textures["b1_0"] : resources.textures["b1_1"];
+    Game::g1_sprite = change ? resources.textures["g1_default"] : toggle ? resources.textures["g1_0"] : resources.textures["g1_1"];
+    
+    DrawTexture(b1_sprite, Utils::centralize(32, {GameConstants::windowXPieces[0], GameConstants::windowXPieces[3]}), GameConstants::windowYPieces[7], WHITE);
+    DrawTexture(b2_sprite, Utils::centralize(32, {GameConstants::windowXPieces[5], GameConstants::windowXPieces[11]}), GameConstants::windowYPieces[7], WHITE);
+    DrawTexture(b3_sprite, Utils::centralize(32, {0, GameConstants::windowX}), GameConstants::windowYPieces[7], WHITE);
+    
+    DrawTexture(g1_sprite, Utils::centralize(512, {0, GameConstants::windowX}), GameConstants::windowYPieces[6], WHITE);
+    
     Game::PlayingScreenData::button_left.draw();
     Game::PlayingScreenData::button_right.draw();
 }
@@ -142,7 +157,9 @@ int main() {
     Resources* resources = new Resources();
     Game game = {*resources};
     
-    bool changeColor;
+    bool changeColor = false;
+    bool toggle = false;
+    bool toggle_two = false;
     
     float start = GetTime();
     int counter = 0;
@@ -157,9 +174,12 @@ int main() {
         
         if (game.currentState == GameState::MainTitleScreen) {
             changeColor = Utils::timer(GetTime(), start, GameConstants::blinkIterval);
-            if (changeColor) ++counter;
+            if (changeColor) {
+                ++counter;
+                toggle = counter % 2 == 0;
+            }
             
-            game.mainTitleScreen(counter % 2 == 0 ? WHITE : BLACK);
+            game.mainTitleScreen(toggle ? WHITE : BLACK);
             
             if (IsKeyPressed(KEY_ENTER)) {
                 game.currentState = GameState::SelectionScreen;
@@ -185,16 +205,22 @@ int main() {
         }
         else if (game.currentState == GameState::PlayingScreen) {
             if (Utils::timer(GetTime(), start, 1)) {
+                ++counter;
+                toggle = counter % 2 == 0;
+                if (toggle) toggle_two = !toggle_two;
                 if (time_bar.update(1)) game.currentState = GameState::GameOverScreen;
             }
-            game.playingScreen();
+            game.playingScreen(*resources, toggle, toggle_two);
             time_bar.draw();
         }
         else if (game.currentState == GameState::GameOverScreen) {
             changeColor = Utils::timer(GetTime(), start, GameConstants::blinkIterval);
-            if (changeColor) ++counter;
+            if (changeColor) {
+                ++counter;
+                toggle = counter % 2 == 0;
+            }
             
-            game.gameOverScreen(game.score, counter % 2 == 0 ? WHITE : BLACK);
+            game.gameOverScreen(game.score, toggle ? WHITE : BLACK);
             
             if (IsKeyPressed(KEY_ENTER)) {
                 game.currentState = GameState::SelectionScreen;

@@ -21,7 +21,11 @@ struct Resources {
     
     void loadTextures2D() {
         textures = {
-            //{"[]", LoadTexture("../gfx/[].png")},
+            {"b1_0", LoadTexture("gfx/b1_0.png")},
+            {"b1_1", LoadTexture("gfx/b1_1.png")},
+            {"g1_default", LoadTexture("gfx/g1_default.png")},
+            {"g1_0", LoadTexture("gfx/g1_0.png")},
+            {"g1_1", LoadTexture("gfx/g1_1.png")}
         };
     }
     Resources() {
