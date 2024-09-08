@@ -2,6 +2,7 @@
 
 #define EQUATION_H
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include "question.h"
@@ -31,7 +32,7 @@ struct Equation {
         new_string += " <=> ";
         for (int i = 0; i < (int) products.size(); ++i) {
             new_string += products[i];
-            if (i + 1 < (int) products.size()) new_string += " + ";
+            if (i + 2 < (int) products.size()) new_string += " + ";
         }
         return new_string;
     }

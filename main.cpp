@@ -125,7 +125,7 @@ void Game::selectionScreen() {
 void Game::playingScreen(Resources& resources, bool change, bool toggle, Equation equation, int points) {
     DrawText(("Pontuação: " + to_string(points)).c_str(), GameConstants::windowXPieces[1], GameConstants::windowYPieces[1], FontSize::note, WHITE);
     
-    DrawText(equation.to_draw_string.c_str(), Utils::centralize(MeasureText(equation.to_draw_string.c_str(), FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h2, WHITE);
+    DrawText(equation.to_draw_string.c_str(), Utils::centralize(MeasureText(equation.to_draw_string.c_str(), FontSize::h3), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h3, WHITE);
     DrawText(equation.questions[0].text, Utils::centralize(MeasureText(equation.questions[0].text, FontSize::body)/2, {0, GameConstants::windowXPieces[9]}), GameConstants::windowYPieces[4], FontSize::body, WHITE);
     
     DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PlayingScreenData::label_t1, FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::body, WHITE);
@@ -259,7 +259,7 @@ int main() {
             game.gameOverScreen(game.high_score[game.difficulty], toggle ? WHITE : BLACK, game.high_score[game.difficulty], new_record);
             
             if (IsKeyPressed(KEY_ENTER)) {
-                game.score[game.difficulty] = 0;
+                game.score = {0, 0, 0};
                 game.currentState = GameState::SelectionScreen;
             }            
         }

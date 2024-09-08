@@ -28,6 +28,7 @@ const std::vector<float> GameConstants::windowYPieces = GameConstants::generateP
 struct FontSize {
     static constexpr float h1 = 60.f;
     static constexpr float h2 = 30.f;
+    static constexpr float h3 = 25.f;
     static constexpr float body = 20.f;
     static constexpr float note = 15.f;
 };
