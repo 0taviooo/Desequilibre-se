@@ -8,7 +8,7 @@
 
 std::vector<Equation> material_data = {
     Equation(
-        {"2F2(g)" , "O2(g)" , "DH = 11,0 kcal"},
+        {"2F2(g)" , "O2(g)" , "DH > 0"},
         {"2FO2(g)"},
         {
             Question("Se aumentarmos a concentração de F2 para \nqual lado direção o sistema tende a ir?", true)
@@ -37,7 +37,7 @@ std::vector<Equation> material_data = {
     ),
     Equation(
         {"PCl5(g)"},
-        {"PCl3(g)", "Cl2(g)", "DH = +39,5 kcal/mol"},
+        {"PCl3(g)", "Cl2(g)", "DH > 0"},
         {
             Question("Se diminuirmos a concentração de PCl5, \npara qual lado a reação tende a ir?", false)
         }

@@ -22,7 +22,8 @@ using namespace std;
 struct Game {
     GameState currentState = GameState::MainTitleScreen;
     int difficulty = 0;
-    int score = 0;
+    vector<int> score = {0, 0, 0};
+    vector<int> high_score = {0, 0, 0};
     Texture2D b1_sprite;
     Texture2D b2_sprite;
     Texture2D b3_sprite;
@@ -34,8 +35,8 @@ struct Game {
     
     void mainTitleScreen(Color startColor);
     void selectionScreen();
-    void playingScreen(Resources& resources, bool change, bool toggle);
-    void gameOverScreen(int score, Color startColor);
+    void playingScreen(Resources& resources, bool change, bool toggle, Equation equation, int points);
+    void gameOverScreen(int score, Color startColor, int best_points, bool new_record);
     
     struct MainTitleScreenData {
         static constexpr const char* label_t1 = "(Des)Equilibre-se!";
@@ -66,8 +67,10 @@ struct Game {
     struct GameOverScreenData {
         static constexpr const char* label_t1 = "Fim de Jogo!";
         static constexpr const char* label_t2 = "Pontuação: ";
-        static constexpr const char* label_t3 = "Não desista!";
-        static constexpr const char* label_t4 = "Pressione Enter para retornar!";
+        static constexpr const char* label_t3 = "Novo recorde!";
+        static constexpr const char* label_t4 = "Recorde: ";
+        static constexpr const char* label_t5 = "Não desista!";
+        static constexpr const char* label_t6 = "Pressione Enter para retornar!";
     };
 };
 
@@ -119,9 +122,11 @@ void Game::selectionScreen() {
     }
 }
 
-void Game::playingScreen(Resources& resources, bool change, bool toggle) {
-    DrawText(material_data[0].to_draw_string.c_str(), Utils::centralize(MeasureText(material_data[0].to_draw_string.c_str(), FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h2, WHITE);
-    DrawText(material_data[0].questions[0].text, Utils::centralize(MeasureText(material_data[0].questions[0].text, FontSize::body)/2, {0, GameConstants::windowXPieces[9]}), GameConstants::windowYPieces[4], FontSize::body, WHITE);
+void Game::playingScreen(Resources& resources, bool change, bool toggle, Equation equation, int points) {
+    DrawText(("Pontuação: " + to_string(points)).c_str(), GameConstants::windowXPieces[1], GameConstants::windowYPieces[1], FontSize::note, WHITE);
+    
+    DrawText(equation.to_draw_string.c_str(), Utils::centralize(MeasureText(equation.to_draw_string.c_str(), FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h2, WHITE);
+    DrawText(equation.questions[0].text, Utils::centralize(MeasureText(equation.questions[0].text, FontSize::body)/2, {0, GameConstants::windowXPieces[9]}), GameConstants::windowYPieces[4], FontSize::body, WHITE);
     
     DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PlayingScreenData::label_t1, FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::body, WHITE);
     
@@ -140,11 +145,18 @@ void Game::playingScreen(Resources& resources, bool change, bool toggle) {
     Game::PlayingScreenData::button_right.draw();
 }
 
-void Game::gameOverScreen(int score, Color startColor) {
+void Game::gameOverScreen(int score, Color startColor, int best_points, bool new_record) {
     DrawText(Game::GameOverScreenData::label_t1, Utils::centralize(MeasureText(Game::GameOverScreenData::label_t1, FontSize::h1), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h1, WHITE);
-    DrawText((string(Game::GameOverScreenData::label_t2) + to_string(score)).c_str(), Utils::centralize(MeasureText(Game::GameOverScreenData::label_t2, FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[5], FontSize::body, WHITE);
-    DrawText(Game::GameOverScreenData::label_t3, Utils::centralize(MeasureText(Game::GameOverScreenData::label_t3, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[6], FontSize::h2, WHITE);
-    DrawText(Game::GameOverScreenData::label_t4, Utils::centralize(MeasureText(Game::GameOverScreenData::label_t4, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[7], FontSize::h2, startColor);
+    
+    DrawText((string(Game::GameOverScreenData::label_t2) + to_string(score)).c_str(), Utils::centralize(MeasureText((string(Game::GameOverScreenData::label_t2) + to_string(score)).c_str(), FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[4], FontSize::body, WHITE);
+    
+    if (new_record) DrawText(Game::GameOverScreenData::label_t3, Utils::centralize(MeasureText(Game::GameOverScreenData::label_t3, FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[5], FontSize::body, startColor);
+    else {
+        DrawText(string((Game::GameOverScreenData::label_t4) + to_string(best_points)).c_str(), Utils::centralize(MeasureText(string((Game::GameOverScreenData::label_t4) + to_string(best_points)).c_str(), FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[5], FontSize::body, startColor);
+    }
+    
+    DrawText(Game::GameOverScreenData::label_t5, Utils::centralize(MeasureText(Game::GameOverScreenData::label_t5, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[6], FontSize::h2, WHITE);
+    DrawText(Game::GameOverScreenData::label_t6, Utils::centralize(MeasureText(Game::GameOverScreenData::label_t6, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[7], FontSize::h2, startColor);
 }
 
 int main() {
@@ -156,10 +168,12 @@ int main() {
     InitAudioDevice();
     Resources* resources = new Resources();
     Game game = {*resources};
+    game.current_equation = material_data[Random::gen(0, material_data.size() - 1)];
     
     bool changeColor = false;
     bool toggle = false;
     bool toggle_two = false;
+    bool new_record = false;
     
     float start = GetTime();
     int counter = 0;
@@ -210,7 +224,29 @@ int main() {
                 if (toggle) toggle_two = !toggle_two;
                 if (time_bar.update(1)) game.currentState = GameState::GameOverScreen;
             }
-            game.playingScreen(*resources, toggle, toggle_two);
+            
+            if (!game.current_equation.questions[0].answer && Game::PlayingScreenData::button_left.click()) {
+                game.score[game.difficulty] += 20;
+                game.current_equation = material_data[Random::gen(0, material_data.size() - 1)];
+                time_bar.remaining = time_bar.length;
+            }
+            else if (game.current_equation.questions[0].answer && Game::PlayingScreenData::button_right.click()) {
+                game.score[game.difficulty] += 20;
+                game.current_equation = material_data[Random::gen(0, material_data.size() - 1)];
+                time_bar.remaining = time_bar.length;
+            }
+            else if (
+                (game.current_equation.questions[0].answer && Game::PlayingScreenData::button_left.click()) ||
+                (!game.current_equation.questions[0].answer && Game::PlayingScreenData::button_right.click())
+            ) {
+                game.currentState = GameState::GameOverScreen;
+            }
+            if (game.currentState == GameState::GameOverScreen) {
+                new_record = game.score[game.difficulty] > game.high_score[game.difficulty];
+                if (new_record) game.high_score[game.difficulty] = game.score[game.difficulty];
+            }
+            
+            game.playingScreen(*resources, toggle, toggle_two, game.current_equation, game.score[game.difficulty]);
             time_bar.draw();
         }
         else if (game.currentState == GameState::GameOverScreen) {
@@ -220,9 +256,10 @@ int main() {
                 toggle = counter % 2 == 0;
             }
             
-            game.gameOverScreen(game.score, toggle ? WHITE : BLACK);
+            game.gameOverScreen(game.high_score[game.difficulty], toggle ? WHITE : BLACK, game.high_score[game.difficulty], new_record);
             
             if (IsKeyPressed(KEY_ENTER)) {
+                game.score[game.difficulty] = 0;
                 game.currentState = GameState::SelectionScreen;
             }            
         }
