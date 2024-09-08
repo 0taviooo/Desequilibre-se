@@ -33,10 +33,13 @@ struct Game {
     Game(Resources& resources);
     static void Initialize();
     
-    void mainTitleScreen(Color startColor);
-    void selectionScreen();
+    void playMusic(Resources& resources, const char* title);
+    
+    void mainTitleScreen(Resources& resources, Color startColor);
+    void selectionScreen(Resources& resources);
     void playingScreen(Resources& resources, bool change, bool toggle, Equation equation, int points);
-    void gameOverScreen(int score, Color startColor, int best_points, bool new_record);
+    void gameOverScreen(Resources& resources, int score, Color startColor, int best_points, bool new_record);
+    
     
     struct MainTitleScreenData {
         static constexpr const char* label_t1 = "(Des)Equilibre-se!";
@@ -54,9 +57,8 @@ struct Game {
     };    
     
     struct PlayingScreenData {
-        static constexpr const char* label_t1 = "Para qual lado \na equação tenderá?";
-        static constexpr const char* label_t2 = "Esquerda";
-        static constexpr const char* label_t3 = "Direita";
+        static constexpr const char* label_t1 = "Esquerda";
+        static constexpr const char* label_t2 = "Direita";
         
         static Button button_left;
         static Button button_right;
@@ -102,34 +104,43 @@ vector<Button> Game::SelectionScreenData::generateButtons() {
 Button Game::PlayingScreenData::button_left;
 Button Game::PlayingScreenData::button_right;
 void Game::PlayingScreenData::generateButtons() {
-    button_left = {5.f, {20, 15}, FontSize::h2, label_t2, WHITE, BLACK, GRAY};
-    button_right = {5.f, {20, 15}, FontSize::h2, label_t3, WHITE, BLACK, GRAY};
+    button_left = {5.f, {20, 15}, FontSize::h2, label_t1, WHITE, BLACK, GRAY};
+    button_right = {5.f, {20, 15}, FontSize::h2, label_t2, WHITE, BLACK, GRAY};
     
     button_left.update({Utils::centralize(button_left.get_width(), {GameConstants::windowXPieces[0], GameConstants::windowXPieces[4]}), GameConstants::windowYPieces[9]});
     button_right.update({Utils::centralize(button_right.get_width(), {GameConstants::windowXPieces[5], GameConstants::windowXPieces[11]}), GameConstants::windowYPieces[9]});
 }
 
-void Game::mainTitleScreen(Color startColor) {
+void Game::playMusic(Resources& resources, const char* title) {
+    PlayMusicStream(resources.musics.at(title));
+    UpdateMusicStream(resources.musics.at(title));
+}
+
+void Game::mainTitleScreen(Resources& resources, Color startColor) {
+    Game::playMusic(resources, "main_title_music");
+
     DrawText(Game::MainTitleScreenData::label_t1, Utils::centralize(MeasureText(Game::MainTitleScreenData::label_t1, FontSize::h1), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h1, WHITE);
     DrawText(Game::MainTitleScreenData::label_t2, Utils::centralize(MeasureText(Game::MainTitleScreenData::label_t2, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[6], FontSize::h2, startColor);
     DrawText(Game::MainTitleScreenData::label_t3, Utils::centralize(MeasureText(Game::MainTitleScreenData::label_t3, FontSize::note), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::note, WHITE);
 }
 
-void Game::selectionScreen() {
+void Game::selectionScreen(Resources& resources) {
+    Game::playMusic(resources, "menu_music");
+    
     DrawText(Game::SelectionScreenData::label_t1, Utils::centralize(MeasureText(Game::SelectionScreenData::label_t1, FontSize::h2), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h2, WHITE);
     for (Button button: Game::SelectionScreenData::buttons) {
         button.draw();
     }
 }
 
-void Game::playingScreen(Resources& resources, bool change, bool toggle, Equation equation, int points) {
+void Game::playingScreen(Resources& resources, bool change, bool toggle, Equation equation, int points)  {
+    Game::playMusic(resources, "playing_music");
+
     DrawText(("Pontuação: " + to_string(points)).c_str(), GameConstants::windowXPieces[1], GameConstants::windowYPieces[1], FontSize::note, WHITE);
     
     DrawText(equation.to_draw_string.c_str(), Utils::centralize(MeasureText(equation.to_draw_string.c_str(), FontSize::h3), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h3, WHITE);
     DrawText(equation.questions[0].text, Utils::centralize(MeasureText(equation.questions[0].text, FontSize::body)/2, {0, GameConstants::windowXPieces[9]}), GameConstants::windowYPieces[4], FontSize::body, WHITE);
-    
-    DrawText(Game::PlayingScreenData::label_t1, Utils::centralize(MeasureText(Game::PlayingScreenData::label_t1, FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[9], FontSize::body, WHITE);
-    
+        
     Game::b1_sprite = change ? resources.textures["b1_0"] : resources.textures["b1_1"];
     Game::b2_sprite = change ? resources.textures["b1_0"] : resources.textures["b1_1"];
     Game::b3_sprite = change ? resources.textures["b1_0"] : resources.textures["b1_1"];
@@ -137,7 +148,7 @@ void Game::playingScreen(Resources& resources, bool change, bool toggle, Equatio
     
     DrawTexture(b1_sprite, Utils::centralize(32, {GameConstants::windowXPieces[0], GameConstants::windowXPieces[3]}), GameConstants::windowYPieces[7], WHITE);
     DrawTexture(b2_sprite, Utils::centralize(32, {GameConstants::windowXPieces[5], GameConstants::windowXPieces[11]}), GameConstants::windowYPieces[7], WHITE);
-    DrawTexture(b3_sprite, Utils::centralize(32, {0, GameConstants::windowX}), GameConstants::windowYPieces[7], WHITE);
+    DrawTexture(b3_sprite, Utils::centralize(32, {0, GameConstants::windowX}), GameConstants::windowYPieces[9], WHITE);
     
     DrawTexture(g1_sprite, Utils::centralize(512, {0, GameConstants::windowX}), GameConstants::windowYPieces[6], WHITE);
     
@@ -145,7 +156,9 @@ void Game::playingScreen(Resources& resources, bool change, bool toggle, Equatio
     Game::PlayingScreenData::button_right.draw();
 }
 
-void Game::gameOverScreen(int score, Color startColor, int best_points, bool new_record) {
+void Game::gameOverScreen(Resources& resources, int score, Color startColor, int best_points, bool new_record) {
+    Game::playMusic(resources, "game_over_music");
+    
     DrawText(Game::GameOverScreenData::label_t1, Utils::centralize(MeasureText(Game::GameOverScreenData::label_t1, FontSize::h1), {0, GameConstants::windowX}), GameConstants::windowYPieces[3], FontSize::h1, WHITE);
     
     DrawText((string(Game::GameOverScreenData::label_t2) + to_string(score)).c_str(), Utils::centralize(MeasureText((string(Game::GameOverScreenData::label_t2) + to_string(score)).c_str(), FontSize::body), {0, GameConstants::windowX}), GameConstants::windowYPieces[4], FontSize::body, WHITE);
@@ -193,27 +206,34 @@ int main() {
                 toggle = counter % 2 == 0;
             }
             
-            game.mainTitleScreen(toggle ? WHITE : BLACK);
+            game.mainTitleScreen(*resources, toggle ? WHITE : BLACK);
             
             if (IsKeyPressed(KEY_ENTER)) {
+                PlaySound(resources->sounds.at("select_sound"));
                 game.currentState = GameState::SelectionScreen;
             }
         }
         else if (game.currentState == GameState::SelectionScreen) {
-            game.selectionScreen();
+            game.selectionScreen(*resources);
             if (Game::SelectionScreenData::buttons[0].click()) {
+                PlaySound(resources->sounds.at("select_sound"));
                 game.difficulty = 0;
                 game.currentState = GameState::PlayingScreen;
+                SeekMusicStream(resources->musics.at("menu_music"), 0.f);
                 time_bar = {{0, 0}, GameConstants::windowX, 32, 15 - game.difficulty * 5, {GREEN, MAROON}};
             }
             else if (Game::SelectionScreenData::buttons[1].click()) {
+                PlaySound(resources->sounds.at("select_sound"));
                 game.difficulty = 1;
                 game.currentState = GameState::PlayingScreen;
+                SeekMusicStream(resources->musics.at("menu_music"), 0.f);
                 time_bar = {{0, 0}, GameConstants::windowX, 32, 15 - game.difficulty * 5, {GREEN, MAROON}};
             }
             else if (Game::SelectionScreenData::buttons[2].click()) {
+                PlaySound(resources->sounds.at("select_sound"));
                 game.difficulty = 2;
                 game.currentState = GameState::PlayingScreen;
+                SeekMusicStream(resources->musics.at("menu_music"), 0.f);
                 time_bar = {{0, 0}, GameConstants::windowX, 32, 15 - game.difficulty * 5, {GREEN, MAROON}};
             }
         }
@@ -226,11 +246,13 @@ int main() {
             }
             
             if (!game.current_equation.questions[0].answer && Game::PlayingScreenData::button_left.click()) {
+                PlaySound(resources->sounds.at("click_sound"));
                 game.score[game.difficulty] += 20;
                 game.current_equation = material_data[Random::gen(0, material_data.size() - 1)];
                 time_bar.remaining = time_bar.length;
             }
             else if (game.current_equation.questions[0].answer && Game::PlayingScreenData::button_right.click()) {
+                PlaySound(resources->sounds.at("click_sound"));
                 game.score[game.difficulty] += 20;
                 game.current_equation = material_data[Random::gen(0, material_data.size() - 1)];
                 time_bar.remaining = time_bar.length;
@@ -239,9 +261,11 @@ int main() {
                 (game.current_equation.questions[0].answer && Game::PlayingScreenData::button_left.click()) ||
                 (!game.current_equation.questions[0].answer && Game::PlayingScreenData::button_right.click())
             ) {
+                PlaySound(resources->sounds.at("click_sound"));
                 game.currentState = GameState::GameOverScreen;
             }
             if (game.currentState == GameState::GameOverScreen) {
+                SeekMusicStream(resources->musics.at("playing_music"), 0.f);
                 new_record = game.score[game.difficulty] > game.high_score[game.difficulty];
                 if (new_record) game.high_score[game.difficulty] = game.score[game.difficulty];
             }
@@ -256,9 +280,11 @@ int main() {
                 toggle = counter % 2 == 0;
             }
             
-            game.gameOverScreen(game.high_score[game.difficulty], toggle ? WHITE : BLACK, game.high_score[game.difficulty], new_record);
+            game.gameOverScreen(*resources, game.high_score[game.difficulty], toggle ? WHITE : BLACK, game.high_score[game.difficulty], new_record);
             
             if (IsKeyPressed(KEY_ENTER)) {
+                PlaySound(resources->sounds.at("select_sound"));
+                SeekMusicStream(resources->musics.at("game_over_music"), 0.f);
                 game.score = {0, 0, 0};
                 game.currentState = GameState::SelectionScreen;
             }            
