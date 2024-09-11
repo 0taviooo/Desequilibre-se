@@ -144,7 +144,7 @@ void Game::playingScreen(Resources& resources, bool change, bool toggle, Equatio
         
     Game::b1_sprite = change ? resources.textures["b1_0"] : resources.textures["b1_1"];
     Game::b2_sprite = change ? resources.textures["b1_1"] : resources.textures["b1_0"];
-    Game::b3_sprite = change ? resources.textures["b2_0"] : resources.textures["b2_0"];
+    Game::b3_sprite = change ? resources.textures["b2_0"] : resources.textures["b2_1"];
     Game::g1_sprite = change ? resources.textures["g1_default"] : toggle ? resources.textures["g1_0"] : resources.textures["g1_1"];
     
     DrawTexture(b1_sprite, Utils::centralize(48, {GameConstants::windowXPieces[0], GameConstants::windowXPieces[3]}), GameConstants::windowYPieces[7], WHITE);
@@ -284,12 +284,12 @@ int main() {
                 toggle = counter % 2 == 0;
             }
             
-            game.gameOverScreen(*resources, game.high_score[game.difficulty], toggle ? WHITE : BLACK, game.high_score[game.difficulty], new_record);
+            game.gameOverScreen(*resources, game.score[game.difficulty], toggle ? WHITE : BLACK, game.high_score[game.difficulty], new_record);
             
             if (IsKeyPressed(KEY_ENTER)) {
                 PlaySound(resources->sounds.at("select_sound"));
                 SeekMusicStream(resources->musics.at("game_over_music"), 0.f);
-                game.score = {0, 0, 0};
+                game.score[game.difficulty] = 0;
                 game.currentState = GameState::SelectionScreen;
             }            
         }

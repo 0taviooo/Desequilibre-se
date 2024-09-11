@@ -35,6 +35,7 @@ struct Resources {
             {"b1_0", LoadTexture("gfx/b1_0.png")},
             {"b1_1", LoadTexture("gfx/b1_1.png")},
             {"b2_0", LoadTexture("gfx/b2_0.png")},
+            {"b2_1", LoadTexture("gfx/b2_1.png")},
             {"g1_default", LoadTexture("gfx/g1_default.png")},
             {"g1_0", LoadTexture("gfx/g1_0.png")},
             {"g1_1", LoadTexture("gfx/g1_1.png")}
