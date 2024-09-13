@@ -270,6 +270,8 @@ int main() {
             }
             if (game.currentState == GameState::GameOverScreen) {
                 SeekMusicStream(resources->musics.at("playing_music"), 0.f);
+                game.current_equation = material_data[Random::gen(0, material_data.size() - 1)];
+                game.current_question = game.current_equation.questions[Random::gen(0, game.current_equation.questions.size() - 1)];
                 new_record = game.score[game.difficulty] > game.high_score[game.difficulty];
                 if (new_record) game.high_score[game.difficulty] = game.score[game.difficulty];
             }
