@@ -13,8 +13,8 @@ std::vector<Equation> material_data = {
         {
             Question("Se aumentarmos a concentração de F2 para \nqual lado direção o sistema tende a ir?", true),
             Question("Se diminuirmos a concentração de F2 para \nqual lado direção o sistema tende a ir?", false),
-            Question("Para qual lado a reação tende \na ir se aumentarmos o volume do recipiente", true),
-            Question("Para qual lado a reação tende \na ir se diminuirmos o volume do recipiente", false)
+            Question("Para qual lado a reação tende \na ir se aumentarmos o volume do recipiente?", true),
+            Question("Para qual lado a reação tende \na ir se diminuirmos o volume do recipiente?", false)
         }
     ),
     Equation(
@@ -23,8 +23,8 @@ std::vector<Equation> material_data = {
         {
             Question("Para qual lado a reação tende a ir se \naumentarmos a temperatura da reação?", false),
             Question("Para qual lado a reação tende a ir se \ndiminuirmos a temperatura da reação?", true),
-            Question("Para qual lado a reação tende \na ir se aumentarmos o volume do recipiente", true),
-            Question("Para qual lado a reação tende \na ir se diminuirmos o volume do recipiente", false)
+            Question("Para qual lado a reação tende \na ir se aumentarmos o volume do recipiente?", true),
+            Question("Para qual lado a reação tende \na ir se diminuirmos o volume do recipiente?", false)
         }
     ),
     Equation(
@@ -43,8 +43,8 @@ std::vector<Equation> material_data = {
         {
             Question("Para qual lado a reação tende a ir se \ndiminuirmos a concentração de 3CO2 no sistema?", true),
             Question("Para qual lado a reação tende a ir se \naumentarmos a concentração de 3CO2 no sistema?", false),
-            Question("Para qual lado a reação tende \na ir se aumentarmos a pressão do recipiente", false),
-            Question("Para qual lado a reação tende \na ir se diminuirmos a pressão do recipiente", true),
+            Question("Para qual lado a reação tende \na ir se aumentarmos a pressão do recipiente?", false),
+            Question("Para qual lado a reação tende \na ir se diminuirmos a pressão do recipiente?", true),
         }
     ),
     Equation(
@@ -53,8 +53,8 @@ std::vector<Equation> material_data = {
         {
             Question("Se diminuirmos a concentração de PCl5, \npara qual lado a reação tende a ir?", false),
             Question("Se aumentarmos a concentração de PCl5, \npara qual lado a reação tende a ir?", true),
-            Question("Para qual lado a reação tende a ir se \ndiminuirmos o volume do recipiente?", true),
-            Question("Para qual lado a reação tende a ir se \naumentarmos o volume do recipiente?", false),
+            Question("Para qual lado a reação tende a ir se \ndiminuirmos o volume do recipiente??", true),
+            Question("Para qual lado a reação tende a ir se \naumentarmos o volume do recipiente??", false),
             Question("Para qual lado a reação tende \na ir se resfriarmos o sistema?", true),
             Question("Para qual lado a reação tende \na ir se esquentarmos o sistema?", false)
         }
@@ -65,8 +65,8 @@ std::vector<Equation> material_data = {
         {
             Question("Se adicionarmos mais CO2 ao sistema, \npara qual lado o equilíbrio irá se deslocar?", true),
             Question("Se tirarmos certa quantidade de CO2 do sistema, \npara qual lado o equilíbrio irá se deslocar?", false),
-            Question("Para qual lado a reação tende \na ir se aumentarmos o volume do recipiente", true),
-            Question("Para qual lado a reação tende \na ir se diminuirmos o volume do recipiente", false)
+            Question("Para qual lado a reação tende \na ir se aumentarmos o volume do recipiente?", true),
+            Question("Para qual lado a reação tende \na ir se diminuirmos o volume do recipiente?", false)
         }
     ),
     Equation(
@@ -111,8 +111,8 @@ std::vector<Equation> material_data = {
         {
             Question("Para qual lado a reação tende \na ir se aumentarmos a temperatura?", false),
             Question("Para qual lado a reação tende \na ir se diminuirmos a temperatura?", true),
-            Question("Para qual lado a reação tende \na ir se aumentarmos o volume do recipiente", true),
-            Question("Para qual lado a reação tende \na ir se diminuirmos o volume do recipiente", false),
+            Question("Para qual lado a reação tende \na ir se aumentarmos o volume do recipiente?", true),
+            Question("Para qual lado a reação tende \na ir se diminuirmos o volume do recipiente?", false),
             Question("Para qual lado a reação tende a \nir se diminuirmos a concentração de 2NO2(g)?", false),
             Question("Para qual lado a reação tende a \nir se aumentarmos a concentração de 2NO2(g)?", true)
         }
